@@ -118,3 +118,21 @@ numberFn(1,2,3) //6
 // for that we nedd to use a type alias:
 type numberFn2 = (...nums: Array<number>) => number; 
 
+// CALL SIGNATURES
+// functions can also have properties, because they're objects
+// a function type expressions doesn't allow (watch above) to specify props. In order to do that use an object type and specify
+// props and the function's call signature:
+
+type numberFn3 = {
+    (...nums: number[]): number; // not => number;
+    operation: string;
+}
+
+// now the function has to be wrapped with parentheses, and than we have to add the type assertion AS
+let myNumberFn3 = ((...nums:number[]): number => {
+    return nums.reduce((prev:number, curr:number) => prev + curr, 0); 
+}) as numberFn3 // if this is not specified, than we won't be able to add 'operation' property
+
+myNumberFn3.operation = 'sum' // this property may not be and there won't be an error
+// myNumberFn3.someProp = 'sum' // this will cause an error
+
