@@ -70,7 +70,7 @@ let { height, weight, age } = { height: 180, weight: 70, age: 44 };
 // in order to avoid setting types to parameters in a way like below (72), we can destructure parameters of the function:
 //! parameters have to have types anyway, but it can look more readable - see line 83 
 // function showlocation(lat: string, lng: string): void {
-function showlocation({ lat, lng }: { lat: string, lng: string}): void {
+function showlocation({ lat, lng }: { lat: string, lng: string }): void {
     window.open(`https://www.openstreetmap.org/#map=16/${lat}/${lng}`)
 }
 // 
@@ -81,7 +81,7 @@ type location = {
 }
 
 function showLocation2({ zoom, lat, lng }: location): void {
-// function showLocation2(): void {
+    // function showLocation2(): void {
     window.open(`https://www.openstreetmap.org/#map=${zoom}/${lat}/${lng}`)
 }
 
@@ -109,14 +109,14 @@ let numberFn: (...nums: number[]) => number;
 // now we define a function. This actual function is very similar to the function type expression above
 // the only difference is that the actual function specifies the return type in between the parameter list and fat arrow
 numberFn = (...nums: number[]): number => {
-    return nums.reduce((prev:number, curr:number) => prev + curr, 0);
+    return nums.reduce((prev: number, curr: number) => prev + curr, 0);
 }
 
-numberFn(1,2,3) //6
+numberFn(1, 2, 3) //6
 
 // Though numberFn variable can be reused, can store any function that conforms to the function type expression, but the latter can't be reused
 // for that we nedd to use a type alias:
-type numberFn2 = (...nums: Array<number>) => number; 
+type numberFn2 = (...nums: Array<number>) => number;
 
 // CALL SIGNATURES
 // functions can also have properties, because they're objects
@@ -129,8 +129,8 @@ type numberFn3 = {
 }
 
 // now the function has to be wrapped with parentheses, and than we have to add the type assertion AS
-let myNumberFn3 = ((...nums:number[]): number => {
-    return nums.reduce((prev:number, curr:number) => prev + curr, 0); 
+let myNumberFn3 = ((...nums: number[]): number => {
+    return nums.reduce((prev: number, curr: number) => prev + curr, 0);
 }) as numberFn3 // if this is not specified, than we won't be able to add 'operation' property
 
 myNumberFn3.operation = 'sum' // this property may not be and there won't be an error
@@ -142,6 +142,29 @@ myNumberFn3.operation = 'sum' // this property may not be and there won't be an 
 // though this syntax is very similar to the syntax for declaring an object which contains a method
 // don't confuse them
 interface logFn {
-    (arg0: string, arg1: number) : void;
+    (arg0: string, arg1: number): void;
 }
 let myLogFn: logFn = (str, num) => console.log(str + ' ' + num)
+
+// THIS PARAMETER.
+// the following example is used to describe a constructor function. This could be used to support legacy code
+// so i haven't realy got into the subject
+
+interface user {
+    name: string;
+    new(name: string): user;
+}
+
+function User(this: user, name: string): user {
+    this.name = name;
+    return this;
+}
+
+// or
+
+// const User = function (this: user, name: string) {
+//     this.name = name
+// } as unknown as { new(name: string): user };
+
+//? double type-assertion?
+const user1 = new (User as unknown as user)('Dan');
