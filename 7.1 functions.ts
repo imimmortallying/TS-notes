@@ -136,3 +136,12 @@ let myNumberFn3 = ((...nums:number[]): number => {
 myNumberFn3.operation = 'sum' // this property may not be and there won't be an error
 // myNumberFn3.someProp = 'sum' // this will cause an error
 
+// FUNCTION TYPE interfaces
+
+// interface can describe a function:
+// though this syntax is very similar to the syntax for declaring an object which contains a method
+// don't confuse them
+interface logFn {
+    (arg0: string, arg1: number) : void;
+}
+let myLogFn: logFn = (str, num) => console.log(str + ' ' + num)
