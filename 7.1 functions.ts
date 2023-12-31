@@ -168,3 +168,29 @@ function User(this: user, name: string): user {
 
 //? double type-assertion?
 const user1 = new (User as unknown as user)('Dan');
+
+// FUNCTION OVERLOADS
+// overload means having multiple functions with the same name, but different signatures
+// JS doesn't support this, TS does
+// but using it doesn't seemingly have some obvious benefits
+
+// to overload a function we have to have at least two function signatures (183-185)
+// the last of them has to be the function implementation (186)
+
+// function implementation works without 183-185 just the same way, only difference is the different error message
+// function impl. can have parameters types or return types that function signatures doesn't have. So wy may i need to use this?
+
+// function fn(item: string): string[];
+// function fn(item: number): string[];
+// function fn(item: string[], separator?: string): string;
+function fn(a: string | number | string[], sep?: string):
+    string | string[] {
+    if (typeof a === 'string') {
+        return a.split('');
+    } else if (typeof a === 'number') {
+        return a.toString().split('');
+    } else {
+        return a.join(sep ?? '');
+    }
+}
+
